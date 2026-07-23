@@ -25,7 +25,11 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  overflow-x: clip; /* bloqueia scroll horizontal em qualquer overflow */
+}
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
@@ -283,9 +287,21 @@ h1 em .wi, h2 em .wi {
   letter-spacing: 0.22em;
 }
 
-.nav { display: flex; gap: 28px; }
+.nav { display: flex; align-items: center; gap: 28px; padding-top: 6px; }
 .nav a { font-size: 0.92rem; color: var(--grey); font-weight: 500; transition: color 0.2s; }
 .nav a:hover { color: var(--white); }
+
+/* Header actions (Simular grátis + Instagram + nav-social) alinham com a logo */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-actions .btn-header { display: inline-flex; }
+.header-actions .nav-social {
+  width: 36px; height: 36px;
+  margin-left: 0;
+}
 
 /* ============ BOTÕES ============ */
 
@@ -1369,14 +1385,33 @@ h1 em .wi, h2 em .wi {
   .testimonials { grid-template-columns: 1fr; }
   .simulate-inner { grid-template-columns: 1fr; gap: 40px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .compare-row { grid-template-columns: 1fr 1fr; }
+  .compare-head { display: none; }
   .compare-row > div { padding: 14px 12px; font-size: 0.84rem; gap: 6px; }
   .compare-row > div .ic { width: 16px; height: 16px; }
+  .compare-row > div:first-child { display: none; }
+  .compare-row { position: relative; padding-left: 0; }
+  .compare-row::before {
+    content: attr(data-row);
+    position: absolute; top: 8px; left: 12px;
+    color: var(--grey); font-size: 0.78rem;
+  }
   #sticky-cta { display: block; }
   #whats-float { bottom: 84px; }
   .btn-header { display: none; }
   .scroll-cue { display: none; }
   .marquee-group span { font-size: 0.9rem; padding: 0 18px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  /* Hero glows muito grandes no mobile — esconde */
+  .hero-glow-1, .hero-glow-2 { display: none; }
+  .hero-grid { display: none; }
+  /* Form no mobile: padding menor, full width */
+  .simulate-form { padding: 26px 20px; }
+  .simulate-form input,
+  .simulate-form select { font-size: 16px; padding: 14px 16px; }
+  /* CTA final no mobile: botão não tão gigante */
+  .btn-xl { padding: 18px 28px; font-size: 1rem; }
+  .cta-final-inner { padding: 0 16px; }
 }
 
 @media (max-width: 560px) {

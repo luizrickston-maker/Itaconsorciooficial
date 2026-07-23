@@ -31,3 +31,5 @@ dist/
 build/
 .next/
 out/
+
+.vercel
