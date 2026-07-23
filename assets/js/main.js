@@ -144,6 +144,7 @@
     } else {
       intro.remove();
       initSite();
+      playHeroEntrance();
     }
   }
 
@@ -240,11 +241,20 @@
 
   /* ============ ENTRADA DO HERO ============ */
 
-  function playHeroEntrance() {
-    if (prefersReducedMotion || !window.gsap) return;
+  function playHeroEntrance(onComplete) {
+    if (prefersReducedMotion || !window.gsap) {
+      if (onComplete) onComplete();
+      return;
+    }
 
     const words = splitWords(document.querySelector("#hero h1"));
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    const tl = gsap.timeline({
+      defaults: { ease: "power3.out" },
+      onComplete: () => {
+        initScrollAnimations();
+        if (onComplete) onComplete();
+      },
+    });
 
     tl.from("#header", { y: -80, opacity: 0, duration: 0.8 })
       .from(".hero-badge", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4")
@@ -296,7 +306,6 @@
       });
     });
 
-    initScrollAnimations();
     initPointerEffects();
   }
 
@@ -424,38 +433,12 @@
     });
   }
 
-  /* ============ EFEITOS DE PONTEIRO (desktop) ============ */
+  /* ============ EFEITOS DE PONTEIRO (desktop) ============
+     Magnetic buttons + tilt 3D nos cards.
+     (Cursor follower removido — interação nativa do mouse.) */
 
   function initPointerEffects() {
     if (!finePointer || prefersReducedMotion || !window.gsap) return;
-
-    // Cursor follower: ponto preciso + anel com inércia
-    const dot = document.getElementById("cursor-dot");
-    const ring = document.getElementById("cursor-ring");
-    const dotX = gsap.quickTo(dot, "x", { duration: 0.08, ease: "power2.out" });
-    const dotY = gsap.quickTo(dot, "y", { duration: 0.08, ease: "power2.out" });
-    const ringX = gsap.quickTo(ring, "x", { duration: 0.35, ease: "power2.out" });
-    const ringY = gsap.quickTo(ring, "y", { duration: 0.35, ease: "power2.out" });
-    let cursorShown = false;
-
-    window.addEventListener("mousemove", (e) => {
-      if (!cursorShown) {
-        cursorShown = true;
-        gsap.to([dot, ring], { opacity: 1, duration: 0.3 });
-      }
-      dotX(e.clientX);
-      dotY(e.clientY);
-      ringX(e.clientX);
-      ringY(e.clientY);
-    });
-
-    const hoverSel = "a, button, summary, input, select, [data-tilt]";
-    document.addEventListener("mouseover", (e) => {
-      if (e.target.closest(hoverSel)) ring.classList.add("is-hover");
-    });
-    document.addEventListener("mouseout", (e) => {
-      if (e.target.closest(hoverSel)) ring.classList.remove("is-hover");
-    });
 
     // Magnetic buttons
     document.querySelectorAll("[data-magnetic]").forEach((btn) => {
@@ -510,12 +493,18 @@
     if (!form.reportValidity()) return;
 
     const data = new FormData(form);
+    const valorSelecionado = data.get("valor");
+    const valorCustom = data.get("valor-custom");
+    const valorFinal = valorSelecionado === "outro" && valorCustom
+      ? `R$ ${Number(valorCustom).toLocaleString("pt-BR")}`
+      : valorSelecionado;
+
     const msg = [
       "Olá! Quero uma simulação de consórcio.",
       `Nome: ${data.get("nome")}`,
       `WhatsApp: ${data.get("whats")}`,
       `Objetivo: ${data.get("objetivo")}`,
-      `Valor desejado: ${data.get("valor")}`,
+      `Valor desejado: ${valorFinal}`,
     ].join("\n");
 
     window.open(
@@ -523,6 +512,22 @@
       "_blank",
       "noopener"
     );
+  });
+
+  // Toggle do campo "Outra quantia"
+  const valorSelect = document.getElementById("valor-select");
+  const valorCustomWrap = document.querySelector(".valor-custom-wrap");
+  const valorCustomInput = document.getElementById("valor-custom");
+  valorSelect.addEventListener("change", () => {
+    if (valorSelect.value === "outro") {
+      valorCustomWrap.hidden = false;
+      valorCustomInput.required = true;
+      valorCustomInput.focus();
+    } else {
+      valorCustomWrap.hidden = true;
+      valorCustomInput.required = false;
+      valorCustomInput.value = "";
+    }
   });
 
   /* ============ MISC ============ */

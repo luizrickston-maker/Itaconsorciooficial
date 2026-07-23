@@ -11,8 +11,8 @@
   --black-2: #101012;
   --black-3: #17171a;
   --white: #ffffff;
-  --grey: #a5a5ad;
-  --grey-2: #6b6b74;
+  --grey: #c8c8d0;
+  --grey-2: #8a8a92;
   --line: rgba(255, 255, 255, 0.08);
   --glow: rgba(255, 92, 0, 0.35);
   --radius: 20px;
@@ -237,40 +237,6 @@ h1 em .wi, h2 em .wi {
 
 #intro-skip:hover { color: var(--white); border-color: var(--orange); }
 
-/* ============ CURSOR FOLLOWER (desktop) ============ */
-
-#cursor-dot, #cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 1500;
-  pointer-events: none;
-  border-radius: 50%;
-  opacity: 0;
-}
-
-#cursor-dot {
-  width: 7px; height: 7px;
-  background: var(--orange);
-  transform: translate(-50%, -50%);
-}
-
-#cursor-ring {
-  width: 38px; height: 38px;
-  border: 1.5px solid rgba(255, 92, 0, 0.55);
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
-}
-
-#cursor-ring.is-hover {
-  width: 62px; height: 62px;
-  background: rgba(255, 92, 0, 0.08);
-  border-color: rgba(255, 122, 38, 0.9);
-}
-
-@media (hover: none), (pointer: coarse) {
-  #cursor-dot, #cursor-ring { display: none; }
-}
-
 /* ============ HEADER ============ */
 
 #header {
@@ -366,6 +332,48 @@ h1 em .wi, h2 em .wi {
 .btn .btn-arrow { width: 18px; height: 18px; transition: transform 0.25s; }
 .btn:hover .btn-arrow { transform: translateX(5px); }
 
+/* Instagram no nav — ícone da marca com brilho animado */
+.nav-social {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  margin-left: 4px;
+  color: var(--orange);
+  border-radius: 50%;
+  background: rgba(255, 92, 0, 0.1);
+  border: 1px solid rgba(255, 92, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.nav-social:hover {
+  background: rgba(255, 92, 0, 0.2);
+  transform: scale(1.08);
+}
+
+.nav-social .ic { width: 18px; height: 18px; stroke: currentColor; position: relative; z-index: 1; }
+
+/* Brilho que varre o ícone continuamente */
+.nav-social::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%);
+  transform: translateX(-100%);
+  animation: nav-shine 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes nav-shine {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+
 /* ============ HERO ============ */
 
 #hero {
@@ -433,7 +441,29 @@ h1 em .wi, h2 em .wi {
 
 .hero-sub { color: var(--grey); font-size: 1.15rem; max-width: 34rem; margin: 24px 0 34px; }
 
-.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 480px;
+  margin-top: 6px;
+}
+
+.hero-ctas .btn-hero-primary,
+.hero-ctas .btn-hero-ghost {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  justify-content: center;
+}
+
+.hero-ctas .btn-hero-ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 14px 28px;
+  font-size: 0.95rem;
+}
 
 .hero-trust { display: flex; align-items: center; gap: 14px; margin-top: 36px; color: var(--grey); font-size: 0.95rem; }
 .hero-trust strong { color: var(--white); }
@@ -454,14 +484,14 @@ h1 em .wi, h2 em .wi {
 .trust-avatars span:first-child { margin-left: 0; }
 .trust-avatars span:last-child { background: linear-gradient(145deg, var(--orange-hot), var(--orange-deep)); }
 
-/* Card de simulação no hero */
+/* Card de simulação no hero — hierarquia tipográfica modular */
 .hero-visual { perspective: 1000px; }
 
 .hero-card {
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 30px;
+  padding: 28px 30px 24px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8), 0 0 90px -40px var(--glow);
@@ -471,45 +501,133 @@ h1 em .wi, h2 em .wi {
 
 .hero-card-tag {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: var(--orange-hot);
   background: rgba(255, 92, 0, 0.12);
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
-.hero-card-row {
+/* ---- Bloco do preço principal ---- */
+.hc-price-block {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.hc-price-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--grey-2);
+  margin-bottom: 6px;
+}
+
+.hc-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-display);
+}
+
+.hc-price-currency {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--orange-hot);
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+.hc-price-value {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--orange-hot);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.hc-price-decimal {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--orange-hot);
+  align-self: flex-end;
+  margin-bottom: 4px;
+}
+
+.hc-price-suffix {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--grey-2);
+  align-self: flex-end;
+  margin-bottom: 5px;
+  margin-left: 4px;
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
+}
+
+/* ---- Divisor ---- */
+.hc-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 20px 0;
+}
+
+/* ---- Métricas secundárias ---- */
+.hc-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hc-metric {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 16px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.95rem;
-  color: var(--grey);
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.hero-card-row strong { color: var(--white); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
-.hero-card-row s { color: var(--grey-2); }
+.hc-metric:last-child { border-bottom: 0; }
 
-.hero-card-row.highlight { border-bottom: 0; }
-.hero-card-row.highlight strong { color: var(--orange-hot); font-size: 1.45rem; font-family: var(--font-display); }
+.hc-metric-label {
+  font-size: 0.8rem;
+  color: var(--grey-2);
+  font-family: var(--font-body);
+  flex-shrink: 0;
+}
 
+.hc-metric-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-display);
+  text-align: right;
+}
+
+/* ---- Call-to-action savings ---- */
 .hero-card-save {
-  margin-top: 16px;
-  background: rgba(255, 92, 0, 0.12);
-  border: 1px dashed rgba(255, 92, 0, 0.4);
-  border-radius: 12px;
-  padding: 12px 16px;
+  margin-top: 18px;
+  background: rgba(255, 92, 0, 0.1);
+  border: 1px dashed rgba(255, 92, 0, 0.35);
+  border-radius: 10px;
+  padding: 10px 14px;
   text-align: center;
-  font-size: 0.92rem;
+  font-size: 0.8rem;
   color: var(--grey);
+  line-height: 1.5;
+  font-family: var(--font-body);
 }
-.hero-card-save strong { color: var(--orange-hot); }
+.hero-card-save strong { color: var(--orange-hot); font-weight: 700; }
 
 .scroll-cue {
   position: absolute;
@@ -614,16 +732,35 @@ h1 em .wi, h2 em .wi {
   text-align: center;
 }
 
-.stat strong {
-  display: block;
+.stat-value {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
   font-weight: 800;
   color: var(--orange);
   font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
-.stat span:last-child { color: var(--grey); font-size: 0.92rem; }
+.stat-value .counter {
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.stat-value .stat-prefix,
+.stat-value .stat-suffix {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.stat-value .stat-prefix { margin-right: 4px; }
+.stat-value .stat-suffix { margin-left: 2px; }
+
+.stat-label { display: block; color: var(--grey); font-size: 0.92rem; margin-top: 10px; }
 
 /* ============ SEÇÕES ============ */
 
@@ -643,62 +780,136 @@ h1 em .wi, h2 em .wi {
   margin-bottom: 16px;
 }
 
-.section-cta { text-align: center; margin-top: 60px; }
+.section-cta { text-align: center; margin-top: 100px; padding-bottom: 20px; }
 
 /* ============ PRODUTOS — BENTO GRID ============ */
 
 .bento {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(260px, auto);
   gap: 18px;
 }
 
 .bento-wide { grid-column: span 2; }
 
 .product-card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 28px 24px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  transform-style: preserve-3d;
-  will-change: transform;
-  position: relative;
   overflow: hidden;
+  min-height: 220px;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  will-change: transform;
+  background-color: var(--black-2);
+  isolation: isolate;
 }
 
-.product-card::before {
-  content: "";
+/* Imagem de fundo — <img> real é bulletproof contra bugs de CSS variable + 3D context */
+.product-card .product-img {
   position: absolute;
   inset: 0;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 92, 0, 0.08), transparent 45%);
-  opacity: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  transition: transform 0.6s ease, filter 0.6s ease;
+  display: block;
+}
+
+.product-card:hover .product-img { transform: scale(1.08); }
+
+/* Overlay — gradiente mais leve no topo/meio, pesado só embaixo pra legibilidade do texto */
+.product-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg,
+    rgba(10, 10, 11, 0.10) 0%,
+    rgba(10, 10, 11, 0.25) 45%,
+    rgba(10, 10, 11, 0.65) 80%,
+    rgba(10, 10, 11, 0.85) 100%);
   transition: opacity 0.35s;
   pointer-events: none;
 }
 
-.product-card:hover::before { opacity: 1; }
+.product-card:hover .product-overlay { background: linear-gradient(180deg,
+    rgba(10, 10, 11, 0.05) 0%,
+    rgba(10, 10, 11, 0.15) 45%,
+    rgba(10, 10, 11, 0.55) 80%,
+    rgba(10, 10, 11, 0.75) 100%); }
 
-.product-card:hover {
-  border-color: rgba(255, 92, 0, 0.5);
-  box-shadow: 0 24px 48px -24px var(--glow);
+/* Esconde o div .product-bg agora que o ::before cuida disso */
+.product-bg { display: none !important; }
+
+/* Conteúdo (ícone, título, descrição) — fica acima do overlay */
+.product-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 28px 24px;
 }
 
+/* Hover — zoom sutil na imagem + borda laranja */
+.product-card:hover { border-color: rgba(255, 92, 0, 0.5); box-shadow: 0 24px 48px -24px var(--glow); }
+
+/* Ícone em vidro fosco — backdrop-filter pega a cor da imagem do card,
+   dando tom único pra cada ícone sem perder a unidade da marca */
 .product-icon {
   display: inline-grid;
   place-items: center;
   width: 52px; height: 52px;
-  color: var(--orange-hot);
-  background: rgba(255, 92, 0, 0.12);
-  border: 1px solid rgba(255, 92, 0, 0.25);
+  color: var(--white);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 14px;
   margin-bottom: 18px;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow:
+    0 8px 28px -10px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  position: relative;
+  overflow: hidden;
 }
 
-.product-icon .ic { width: 26px; height: 26px; }
+/* Brilho diagonal sutil — simula reflexo de luz na superfície do vidro */
+.product-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 60%,
+    transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
 
-.product-card h3 { margin-bottom: 8px; }
-.product-card p { color: var(--grey); font-size: 0.92rem; line-height: 1.55; }
+.product-icon .ic { width: 26px; height: 26px; position: relative; z-index: 1; }
+
+.product-card h3 {
+  margin-bottom: 8px;
+  color: var(--white);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.product-card p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin-top: auto;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
 
 /* ============ COMO FUNCIONA — STICKY + TIMELINE ============ */
 
@@ -938,15 +1149,36 @@ h1 em .wi, h2 em .wi {
 .testimonial figcaption { display: flex; align-items: center; gap: 14px; }
 
 .testimonial .avatar {
-  width: 46px; height: 46px;
+  width: 56px; height: 56px;
   flex-shrink: 0;
   display: grid; place-items: center;
   border-radius: 50%;
+  overflow: hidden;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.82rem;
   color: var(--white);
   background: linear-gradient(145deg, var(--orange-hot), var(--orange-deep));
+  position: relative;
+}
+
+.testimonial .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+
+.testimonial .avatar .avatar-initials {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.testimonial .avatar.has-photo .avatar-initials {
+  display: none;
 }
 
 .testimonial .who { display: grid; gap: 2px; }
@@ -1038,8 +1270,8 @@ h1 em .wi, h2 em .wi {
 
 .footer-inner {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 32px;
+  grid-template-columns: 1fr auto auto;
+  gap: 48px;
   align-items: start;
 }
 
@@ -1049,6 +1281,30 @@ h1 em .wi, h2 em .wi {
 .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
 .footer-links a { color: var(--grey); font-size: 0.9rem; transition: color 0.2s; }
 .footer-links a:hover { color: var(--white); }
+
+.footer-h4 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+  margin-bottom: 14px;
+}
+
+.footer-contact { display: flex; flex-direction: column; gap: 12px; }
+
+.footer-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--grey);
+  font-size: 0.92rem;
+  transition: color 0.2s;
+}
+.footer-contact-item:hover { color: var(--white); }
+.footer-contact-item .ic { width: 18px; height: 18px; color: var(--orange); }
+.footer-contact-item:first-child .ic { color: var(--orange); }
 
 .footer-legal {
   grid-column: 1 / -1;
@@ -1120,6 +1376,7 @@ h1 em .wi, h2 em .wi {
   .btn-header { display: none; }
   .scroll-cue { display: none; }
   .marquee-group span { font-size: 0.9rem; padding: 0 18px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
 }
 
 @media (max-width: 560px) {
@@ -1129,6 +1386,15 @@ h1 em .wi, h2 em .wi {
   .simulate-form { padding: 28px 22px; }
   .timeline { padding-left: 36px; }
   .step::before { left: -31px; }
+  /* Hero card — escala proporcional no mobile */
+  .hc-price-value { font-size: 2.6rem; }
+  .hc-price-currency { font-size: 0.95rem; }
+  .hc-price-decimal { font-size: 1.25rem; }
+  .hc-metric-label { font-size: 0.75rem; }
+  .hc-metric-value { font-size: 0.85rem; }
+  /* Produto — imagem escala com a tela */
+  .product-media { width: 80px; height: 80px; }
+  .product-img { width: 72px; height: 72px; }
 }
 
 /* ============ ACESSIBILIDADE / MOTION ============ */
