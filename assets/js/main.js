@@ -19,6 +19,15 @@
   const introStage = document.getElementById("intro-stage");
   const site = document.getElementById("site");
 
+  // DEV: auto-skip intro para screenshots de teste
+  if (window.location.search.includes("skipIntro")) {
+    setTimeout(() => {
+      intro.remove();
+      site.hidden = false;
+      initSite();
+    }, 100);
+  }
+
   let lenis = null;
 
   /* ============ SOM "TA-DUM" (Web Audio API) ============
@@ -128,24 +137,8 @@
 
   function revealSite() {
     if (!site.hidden) return;
-    document.body.style.overflow = "";
-
-    // Aplica os from-states do hero ANTES de remover o `hidden` do site.
-    // Sem isso, o navegador pinta o estado natural por 1 frame,
-    // depois GSAP aplica o from-state — causando o efeito de "2x render".
-    if (!prefersReducedMotion && window.gsap) {
-      gsap.set("#header", { y: -80, opacity: 0 });
-      gsap.set(".hero-badge", { y: 30, opacity: 0 });
-      const h1Words = document.querySelectorAll("#hero h1 .wi");
-      if (h1Words.length) gsap.set(h1Words, { yPercent: 115 });
-      gsap.set(".hero-sub", { y: 40, opacity: 0 });
-      gsap.set(".hero-ctas", { y: 30, opacity: 0 });
-      gsap.set(".hero-trust", { y: 20, opacity: 0 });
-      gsap.set(".hero-card", { y: 80, opacity: 0 });
-    }
-
     site.hidden = false;
-
+    document.body.style.overflow = "";
     if (!prefersReducedMotion && window.gsap) {
       gsap.to(intro, {
         opacity: 0,
