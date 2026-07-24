@@ -83,6 +83,39 @@ body .container,
   box-sizing: border-box;
   overflow-x: clip; /* hard cap em qualquer overflow interno */
 }
+
+/* ============ FONTES (SELF-HOSTED, ANTES DE TUDO) ============ */
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: local("Inter"), url("../fonts/inter-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("../fonts/inter-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE, U+02D1-02D7, U+02DD, U+0304, U+0308, U+0329, U+2000-206F, U+20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Sora";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: local("Sora"), url("../fonts/sora-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Sora";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../fonts/sora-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE, U+02D1-02D7, U+02DD, U+0304, U+0308, U+0329, U+2000-206F, U+20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 .container-narrow { width: min(820px, 92%); margin-inline: auto; }
 
 ::selection { background: var(--orange); color: var(--black); }
@@ -1416,17 +1449,47 @@ h1 em .wi, h2 em .wi {
   .simulate-form label > span { font-size: 0.85rem; }
   .simulate-form .btn-block { padding: 16px 22px; font-size: 0.98rem; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .compare-row { grid-template-columns: 1fr 1fr; }
-  .compare-head { display: none; }
-  .compare-row > div { padding: 14px 12px; font-size: 0.84rem; gap: 6px; }
-  .compare-row > div .ic { width: 16px; height: 16px; }
-  .compare-row > div:first-child { display: none; }
-  .compare-row { position: relative; padding-left: 0; }
-  .compare-row::before {
-    content: attr(data-row);
-    position: absolute; top: 8px; left: 12px;
-    color: var(--grey); font-size: 0.78rem;
+  /* Compare: cada linha vira um card (mesmo padrão de .testimonial/.product-card).
+     Coloca o título no topo e os 2 valores empilhados abaixo — sem cortar nada. */
+  .compare { background: transparent; border: 0; }
+  /* .compare-head: especificidade alta pra não ser sobrescrita pelo .compare-row abaixo */
+  .compare-row.compare-head { display: none; }
+  /* Reduz o respiro entre o subtítulo "dezenas de milhares de reais" e o 1º card */
+  #comparativo .section-head { margin-bottom: 32px; }
+  .compare-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 14px;
   }
+  .compare-row:last-child { margin-bottom: 0; }
+  .compare-row > div {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-inline: 0;
+    font-size: 0.95rem;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+  .compare-row > div:first-child {
+    color: var(--orange);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    padding-bottom: 12px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .compare-row > div .ic { width: 18px; height: 18px; flex-shrink: 0; }
+  .compare-row > div:not(:first-child) { display: flex; }
   #sticky-cta { display: block; }
   #whats-float { bottom: 84px; }
   .btn-header { display: none; }

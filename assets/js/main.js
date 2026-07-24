@@ -137,23 +137,27 @@
 
   function revealSite() {
     if (!site.hidden) return;
+
+    // 1) Tira o site do estado hidden (síncrono, mesmo JS task)
     site.hidden = false;
     document.body.style.overflow = "";
+
+    // 2) Inicializa site + roda entrance do hero IMEDIATAMENTE
+    //    (mesmo task síncrono) — GSAP aplica os from-states
+    //    antes do browser pintar, eliminando o flash do estado natural
+    initSite();
+    playHeroEntrance();
+
+    // 3) AGORA fade out do intro (que tampa o site enquanto ele anima)
     if (!prefersReducedMotion && window.gsap) {
       gsap.to(intro, {
         opacity: 0,
         duration: 0.6,
         ease: "power2.inOut",
-        onComplete: () => {
-          intro.remove();
-          initSite();
-          playHeroEntrance();
-        },
+        onComplete: () => intro.remove(),
       });
     } else {
       intro.remove();
-      initSite();
-      playHeroEntrance();
     }
   }
 
