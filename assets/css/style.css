@@ -21,7 +21,9 @@
   --header-h: 76px;
   --mark-main: #ff5c00;
   --mark-alt: #b9b9c1;
-}
+  --container-max: 1180px;
+  --hero-bleed: calc(50vw - var(--container-max) / 2);
+  }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -437,10 +439,11 @@ h1 em .wi, h2 em .wi {
 
 #hero {
   position: relative;
-  min-height: 100svh;
+  min-height: 75svh;
   display: flex;
-  align-items: center;
-  padding: calc(var(--header-h) + 48px) 0 80px;
+  /* estica a .hero-inner para preencher a dobra toda — essencial para que a foto
+     absoluta (bottom: 0) alcance a base da primeira dobra, não a base do texto */
+  padding: calc(var(--header-h) + 24px) 0 48px;
   overflow: hidden;
 }
 
@@ -449,13 +452,13 @@ h1 em .wi, h2 em .wi {
 .hero-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(60px);
 }
 
 .hero-glow-1 {
-  width: 620px; height: 620px;
-  top: -180px; right: -140px;
-  background: radial-gradient(circle, rgba(255, 92, 0, 0.34), transparent 65%);
+  width: 900px; height: 900px;
+  top: -200px; right: -180px;
+  background: radial-gradient(circle, rgba(255, 92, 0, 0.62), transparent 55%);
 }
 
 .hero-glow-2 {
@@ -484,6 +487,10 @@ h1 em .wi, h2 em .wi {
   min-width: 0;
 }
 
+/* A reordenação (foto ANTES do texto no mobile/tablet) é controlada
+   pelo @media (max-width: 1024px) mais abaixo, que também faz o
+   grid virar 1fr. */
+
 .hero-badge {
   display: block;
   width: fit-content;
@@ -504,6 +511,11 @@ h1 em .wi, h2 em .wi {
 }
 
 .hero-badge .ic { margin-right: 6px; }
+
+/* Descrição da equipe — visível APENAS no mobile.
+   Aparece entre a foto e o badge ("Parcelas com até 50% OFF") porque
+   está dentro de .hero-visual, que tem order: -1 no mobile. */
+.hero-team-note { display: none; }
 
 .hero-sub { color: var(--grey); font-size: 1.15rem; max-width: 100%; margin: 24px 0 34px; }
 
@@ -536,6 +548,14 @@ h1 em .wi, h2 em .wi {
   font-size: 0.95rem;
 }
 
+/* Coluna do texto: ocupa ~48% do container e fica acima da foto (z-index 3) */
+.hero-copy {
+  position: relative;
+  z-index: 3;
+  max-width: 560px;
+  width: 100%;
+}
+
 .hero-trust { display: flex; align-items: center; gap: 14px; margin-top: 36px; color: var(--grey); font-size: 0.95rem; }
 .hero-trust strong { color: var(--white); }
 
@@ -555,154 +575,96 @@ h1 em .wi, h2 em .wi {
 .trust-avatars span:first-child { margin-left: 0; }
 .trust-avatars span:last-child { background: linear-gradient(145deg, var(--orange-hot), var(--orange-deep)); }
 
-/* Card de simulação no hero — hierarquia tipográfica modular */
-.hero-visual { perspective: 1000px; min-width: 0; }
+/* Foto do time — Mobile: aparece PRIMEIRO no hero (antes do badge/H1),
+   com fade inferior pra integrar com o fundo escuro.
+   Desktop (>=1024px): posicionada absoluta, ancorada no canto superior direito.
+   A PNG é transparente, então o glow/grid do hero aparecem por trás.
 
-.hero-card {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 28px 30px 24px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8), 0 0 90px -40px var(--glow);
-  transform-style: preserve-3d;
-  will-change: transform;
-  max-width: 100%;
-  min-width: 0;
+   Mobile: width = (container + 32px) × 1.2 → 20% maior que o tamanho
+   base. Sangra além do .container (que tem padding interno) e é
+   clipado pelo overflow: hidden do #hero — não causa scroll
+   horizontal em nenhuma tela.
+
+   .hero-visual { min-width: 0 } evita que o grid estoure quando o
+   conteúdo da coluna da direita é maior que 0.85fr (efeito típico
+   de min-content > fr unit). */
+.hero-visual { min-width: 0; }
+
+.hero-photo {
+  position: relative;
+  width: calc((100% + 32px) * 1.2);
+  max-width: none;
+  margin: 0 calc(-10% - 19.2px) 28px; /* centraliza o aumento de 20% */
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
 }
 
-.hero-card-tag {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--orange-hot);
-  background: rgba(255, 92, 0, 0.12);
-  padding: 4px 10px;
-  border-radius: 999px;
-  margin-bottom: 22px;
-}
-
-/* ---- Bloco do preço principal ---- */
-.hc-price-block {
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-.hc-price-label {
+.hero-photo img {
+  width: 100%;
+  height: auto;
   display: block;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--grey-2);
-  margin-bottom: 6px;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
 }
 
-.hc-price-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  font-family: var(--font-display);
+/* Fade preto inferior — funciona em mobile e desktop (movido pra fora do
+   @media pra cobrir ambos). A altura é ajustada por breakpoint.
+
+   Como o #hero agora tem background sólido var(--black) no mobile
+   (sem glow laranja), o gradiente precisa cair EXATAMENTE em
+   rgb(10, 10, 11) — qualquer diferença gera uma linha horizontal
+   visível na transição foto→fundo. Por isso o stop vai até 100% e
+   a cor final usa o mesmo RGB do --black. */
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 11, 0) 0%,
+    rgb(10, 10, 11) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
-.hc-price-currency {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--orange-hot);
-  align-self: flex-start;
-  margin-top: 6px;
+@media (min-width: 1024px) {
+  /* Foto ancorada no canto superior-direito. Proporção natural preservada
+     (1.354:1 da PNG 1800×1329 — sem distorção, sem corte). Em 1280px:
+     ~716px × ~529px (borda inf. ≈ y=639). */
+  .hero-visual {
+    order: 0; /* reset explícito — no desktop a foto é absolute e order é ignorado */
+  }
+  .hero-photo {
+    position: absolute;
+    top: 20px;
+    right: -15vw;
+    width: clamp(700px, 65vw, 920px);
+    height: auto;
+    max-width: none;
+    margin: 0;
+    z-index: 2;
+    overflow: hidden;
+  }
+  .hero-photo img {
+    display: block;
+    width: 100%;
+    height: auto; /* preserva 1.354:1 original — sem distorção */
+  }
+  /* Glow radial removido — ele vazava pelas bordas anti-aliased da foto
+     e criava um contorno laranja nos homens. O glow ambiente agora vem
+     do .hero-glow-1 do hero, que aparece por trás das áreas transparentes. */
+  .hero-photo::before { content: none; }
+  /* No desktop o fade é mais alto (45%) — cobre a base maior da foto */
+  .hero-photo::after {
+    height: 45%;
+  }
 }
-
-.hc-price-value {
-  font-size: 3.2rem;
-  font-weight: 700;
-  color: var(--orange-hot);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.hc-price-decimal {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--orange-hot);
-  align-self: flex-end;
-  margin-bottom: 4px;
-}
-
-.hc-price-suffix {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--grey-2);
-  align-self: flex-end;
-  margin-bottom: 5px;
-  margin-left: 4px;
-  font-family: var(--font-body);
-  letter-spacing: 0.05em;
-}
-
-/* ---- Divisor ---- */
-.hc-divider {
-  height: 1px;
-  background: var(--line);
-  margin: 20px 0;
-}
-
-/* ---- Métricas secundárias ---- */
-.hc-metrics {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.hc-metric {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.hc-metric:last-child { border-bottom: 0; }
-
-.hc-metric-label {
-  font-size: 0.8rem;
-  color: var(--grey-2);
-  font-family: var(--font-body);
-  flex-shrink: 1;
-  min-width: 0;
-}
-
-.hc-metric-value {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--white);
-  font-variant-numeric: tabular-nums;
-  font-family: var(--font-display);
-  text-align: right;
-  flex-shrink: 0;
-}
-
-/* ---- Call-to-action savings ---- */
-.hero-card-save {
-  margin-top: 18px;
-  background: rgba(255, 92, 0, 0.1);
-  border: 1px dashed rgba(255, 92, 0, 0.35);
-  border-radius: 10px;
-  padding: 10px 14px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--grey);
-  line-height: 1.5;
-  font-family: var(--font-body);
-}
-.hero-card-save strong { color: var(--orange-hot); font-weight: 700; }
 
 .scroll-cue {
   position: absolute;
@@ -1433,7 +1395,7 @@ h1 em .wi, h2 em .wi {
 @media (max-width: 1024px) {
   .bento { grid-template-columns: repeat(2, 1fr); }
   .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-  .hero-visual { max-width: 100%; }
+  .hero-visual { max-width: 100%; order: -1; } /* foto ANTES do texto no tablet/mobile */
   .how-grid { grid-template-columns: 1fr; gap: 48px; }
   .how-sticky { position: static; }
 }
@@ -1502,6 +1464,50 @@ h1 em .wi, h2 em .wi {
   /* CTA final no mobile: botão não tão gigante */
   .btn-xl { padding: 18px 28px; font-size: 1rem; }
   .cta-final-inner { padding: 0 16px; }
+
+  /* Hero mobile: fundo 100% preto (foco total na foto da equipe).
+     Sem o glow laranja, o gradient da foto precisa cair exatamente
+     em rgb(10,10,11) pra não criar linha de transição — ver
+     .hero-photo::after. */
+  #hero { background: var(--black); }
+
+  /* Descrição da equipe (visível só no mobile, dentro de .hero-visual,
+     entre a foto e o badge). Estilo "nota flutuante" — discreto,
+     respiro generoso, ancora visual com risco laranja no label. */
+  .hero-team-note {
+    display: block;
+    margin: 4px 4px 32px;
+    padding: 0;
+  }
+  .hero-team-note__label {
+    display: inline-block;
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange-hot);
+    margin-bottom: 16px;
+  }
+  .hero-team-note__label::before {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    background: var(--orange-hot);
+    vertical-align: middle;
+    margin-right: 10px;
+    transform: translateY(-2px);
+  }
+  .hero-team-note p {
+    color: var(--grey);
+    font-family: var(--font-body);
+    font-size: 0.97rem;
+    line-height: 1.65;
+    margin: 0 0 12px;
+  }
+  .hero-team-note p:last-child { margin-bottom: 0; }
 }
 
 @media (max-width: 560px) {

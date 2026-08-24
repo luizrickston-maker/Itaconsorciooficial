@@ -55,9 +55,10 @@
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <!-- Preload da primeira imagem visível (LCP) -->
+  <!-- Preload da primeira imagem visível (LCP) — casa no mobile, equipe no desktop -->
   <link rel="preload" href="assets/img/casa.webp" as="image" type="image/webp" />
-  <link rel="stylesheet" href="assets/css/style.css?v=13" />
+  <link rel="preload" as="image" href="assets/img/equipe-ita.png" fetchpriority="high" />
+  <link rel="stylesheet" href="assets/css/style.css?v=14" />
 </head>
 <body>
 
@@ -148,7 +149,7 @@
       <div class="container hero-inner">
         <div class="hero-copy">
           <span class="hero-badge" data-anim="fade-up"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-flame"/></svg> Parcelas com até <strong>50% OFF</strong> — condição por tempo limitado</span>
-          <h1 data-split>Conquiste seu patrimônio <em>sem pagar juros</em> de financiamento.</h1>
+          <h1 data-split>Conquiste seu patrimônio <br><em>sem pagar juros</em> de <br>financiamento.</h1>
           <p class="hero-sub" data-anim="fade-up">Casa, apartamento, carro, moto, caminhão ou investimento — com parcelas que cabem no seu bolso e planejamento inteligente. Simulação gratuita em menos de 2 minutos.</p>
           <div class="hero-ctas" data-anim="fade-up">
             <a href="#simular" class="btn btn-primary btn-lg btn-block btn-hero-primary" data-magnetic>Quero simular agora <svg class="ic btn-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -159,38 +160,17 @@
             <p><strong>+2.500 famílias</strong> já conquistaram seus sonhos com a Ita</p>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="hero-card" data-tilt>
-            <div class="hero-card-tag">Simulação exemplo</div>
-
-            <div class="hc-price-block">
-              <span class="hc-price-label">Parcela mensal</span>
-              <div class="hc-price-row">
-                <span class="hc-price-currency">R$</span>
-                <span class="hc-price-value">287</span>
-                <span class="hc-price-decimal">,00</span>
-                <span class="hc-price-suffix">/mês</span>
-              </div>
-            </div>
-
-            <div class="hc-divider"></div>
-
-            <div class="hc-metrics">
-              <div class="hc-metric">
-                <span class="hc-metric-label">Valor total do crédito</span>
-                <span class="hc-metric-value">R$ 50.000</span>
-              </div>
-              <div class="hc-metric">
-                <span class="hc-metric-label">Prazo do consórcio</span>
-                <span class="hc-metric-value">120 meses</span>
-              </div>
-              <div class="hc-metric">
-                <span class="hc-metric-label">Tributos incluídos</span>
-                <span class="hc-metric-value">Já inclusos</span>
-              </div>
-            </div>
-
-            <div class="hero-card-save">Parcela <strong>até 50% menor</strong> que financiamento</div>
+        <div class="hero-visual">
+          <div class="hero-photo">
+            <img src="assets/img/equipe-ita.png" alt="Equipe Ita Consórcios" width="1800" height="1329" fetchpriority="high" decoding="async" />
+          </div>
+          <!-- Descrição da equipe: aparece APENAS no mobile, entre a foto e o badge.
+               No desktop fica oculto (display: none na base). -->
+          <div class="hero-team-note" data-anim="fade-up">
+            <span class="hero-team-note__label">Quem somos</span>
+            <p>Somos um time de profissionais especializados em consórcio, e nosso trabalho começa muito antes de qualquer contrato: começa ouvindo você. Entendemos suas necessidades com transparência e planejamento, apresentamos as opções reais para o seu momento e caminhamos ao seu lado em cada etapa, sem letra miúda, sem promessas vazias.</p>
+            <p>A gente entende você. Sabemos que por trás de cada consórcio existe um sonho: a casa, o carro, o negócio que você sempre quis tirar do papel.</p>
+            <p>Não somos só um time que vende consórcio. Somos um time que acompanha, orienta e comemora com você quando o sonho se torna realidade.</p>
           </div>
         </div>
       </div>

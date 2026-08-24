@@ -275,7 +275,7 @@
       .from(".hero-sub", { y: 40, opacity: 0, duration: 0.7 }, "-=0.5")
       .from(".hero-ctas", { y: 30, opacity: 0, duration: 0.6 }, "-=0.45")
       .from(".hero-trust", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
-      .from(".hero-card", { y: 80, opacity: 0, duration: 1.1, ease: "power3.out" }, "-=0.85");
+      .from(".hero-photo", { y: 80, opacity: 0, duration: 1.1, ease: "power3.out" }, "-=0.85");
   }
 
   /* ============ INICIALIZAÇÃO DO SITE ============ */
@@ -474,7 +474,7 @@
 
     // Tilt 3D + spotlight que segue o mouse
     document.querySelectorAll("[data-tilt]").forEach((card) => {
-      const max = card.classList.contains("hero-card") ? 7 : 4;
+      const max = 4;
       card.addEventListener("mousemove", (e) => {
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width;
