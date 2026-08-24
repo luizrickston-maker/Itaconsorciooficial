@@ -635,16 +635,23 @@ h1 em .wi, h2 em .wi {
 
 @media (min-width: 1024px) {
   /* Foto ancorada no canto superior-direito. Proporção natural preservada
-     (1.354:1 da PNG 1800×1329 — sem distorção, sem corte). Em 1280px:
-     ~716px × ~529px (borda inf. ≈ y=639). */
+     (1.354:1 da PNG 1800×1329 — sem distorção, sem corte).
+
+     right: 0 encosta a borda direita da foto na borda direita do #hero
+     (= viewport), evitando que o último homem seja cortado pelo
+     overflow: hidden do #hero. Antes usava right: -15vw (efeito
+     "sangria" pra fora do container), mas em viewports < ~1600px
+     isso cortava o rapaz da direita. Largura reduzida um pouco
+     (65vw→58vw, 920px→820px) pra compensar a perda da sangria e
+     manter o "imponente" sem invadir o texto. */
   .hero-visual {
     order: 0; /* reset explícito — no desktop a foto é absolute e order é ignorado */
   }
   .hero-photo {
     position: absolute;
     top: 20px;
-    right: -15vw;
-    width: clamp(700px, 65vw, 920px);
+    right: 0;
+    width: clamp(700px, 58vw, 820px);
     height: auto;
     max-width: none;
     margin: 0;
