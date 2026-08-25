@@ -1509,6 +1509,49 @@ h1 em .wi, h2 em .wi {
   .hero-team-note p:last-child { margin-bottom: 0; }
 }
 
+/* ============ SOBRE NÓS (entre marquee e stats) ============ */
+.about-us {
+  text-align: center;
+  padding: 96px 0 88px;
+}
+.about-us__label {
+  display: inline-block;
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--orange-hot);
+  margin-bottom: 28px;
+}
+.about-us__label::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--orange-hot);
+  vertical-align: middle;
+  margin-right: 12px;
+  transform: translateY(-2px);
+}
+.about-us p {
+  color: var(--grey);
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  line-height: 1.78;
+  margin: 0 auto 18px;
+  max-width: 720px;
+  text-wrap: balance;
+}
+.about-us p:last-child { margin-bottom: 0; }
+
+/* Em telas menores a tipografia respira sem competir com o badge acima */
+@media (max-width: 768px) {
+  .about-us { padding: 72px 0 64px; }
+  .about-us p { font-size: 1rem; line-height: 1.72; }
+}
+
 @media (max-width: 560px) {
   .bento { grid-template-columns: 1fr; }
   .bento-wide { grid-column: auto; }
