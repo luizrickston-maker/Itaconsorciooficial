@@ -643,8 +643,8 @@ h1 em .wi, h2 em .wi {
   .hero-photo {
     position: absolute;
     top: 20px;
-    right: -15vw;
-    width: clamp(700px, 65vw, 920px);
+    right: 3vw; /* era -15vw — moveu 18vw pra esquerda pra mostrar o rapaz */
+    width: clamp(700px, 65vw, 1012px); /* era 920px — 10% maior */
     height: auto;
     max-width: none;
     margin: 0;
@@ -1400,6 +1400,12 @@ h1 em .wi, h2 em .wi {
   .how-sticky { position: static; }
 }
 
+/* Hero: fundo preto sólido em TODAS as telas (igual mobile).
+   Glows laranja e grid removidos do desktop pra harmonizar com mobile. */
+.hero-glow-1, .hero-glow-2 { display: none; }
+.hero-grid { display: none; }
+#hero { background: var(--black); }
+
 @media (max-width: 768px) {
   .nav { display: none; }
   .section { padding: 80px 0; }
@@ -1458,18 +1464,10 @@ h1 em .wi, h2 em .wi {
   .scroll-cue { display: none; }
   .marquee-group span { font-size: 0.9rem; padding: 0 18px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
-  /* Hero glows muito grandes no mobile — esconde */
-  .hero-glow-1, .hero-glow-2 { display: none; }
-  .hero-grid { display: none; }
+  /* Hero glows e grid escondidos em TODAS as telas (ver regra global acima) */
   /* CTA final no mobile: botão não tão gigante */
   .btn-xl { padding: 18px 28px; font-size: 1rem; }
   .cta-final-inner { padding: 0 16px; }
-
-  /* Hero mobile: fundo 100% preto (foco total na foto da equipe).
-     Sem o glow laranja, o gradient da foto precisa cair exatamente
-     em rgb(10,10,11) pra não criar linha de transição — ver
-     .hero-photo::after. */
-  #hero { background: var(--black); }
 
   /* Descrição da equipe (visível só no mobile, dentro de .hero-visual,
      entre a foto e o badge). Estilo "nota flutuante" — discreto,
