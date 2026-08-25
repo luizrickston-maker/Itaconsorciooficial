@@ -643,7 +643,7 @@ h1 em .wi, h2 em .wi {
   .hero-photo {
     position: absolute;
     top: 20px;
-    right: 3vw; /* era -15vw — moveu 18vw pra esquerda pra mostrar o rapaz */
+    right: -12vw; /* era 3vw — moveu 15vw pra direita */
     width: clamp(700px, 65vw, 1012px); /* era 920px — 10% maior */
     height: auto;
     max-width: none;
