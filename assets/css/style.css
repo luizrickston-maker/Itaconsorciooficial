@@ -643,7 +643,7 @@ h1 em .wi, h2 em .wi {
   .hero-photo {
     position: absolute;
     top: 20px;
-    right: -5vw;
+    right: -15vw;
     width: clamp(700px, 65vw, 920px);
     height: auto;
     max-width: none;
