@@ -634,33 +634,51 @@ h1 em .wi, h2 em .wi {
 }
 
 @media (min-width: 1024px) {
-  /* Foto ancorada no canto superior-direito. Proporção natural preservada
-     (1.354:1 da PNG 1800×1329 — sem distorção, sem corte). Em 1280px:
-     ~716px × ~529px (borda inf. ≈ y=639). */
-  .hero-visual {
-    order: 0; /* reset explícito — no desktop a foto é absolute e order é ignorado */
+  /* Grid: 2 colunas. Texto flexível à esquerda (minmax(0, 1fr) impede
+     overflow do h1), foto com largura natural à direita (auto). Sem
+     overlap: foto nunca invade o texto, texto nunca invade a foto. */
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 40px;
   }
+  .hero-visual {
+    order: 0; /* reset explícito — no desktop a foto não usa order */
+  }
+  /* Foto em container RELATIVO (não absolute) com aspect-ratio da PNG
+     original. Sem `right` negativo = #hero (overflow: hidden) nunca
+     corta nada. Visual profissional: border-radius + sombra suave. */
   .hero-photo {
-    position: absolute;
-    top: 20px;
-    right: -12vw; /* era 3vw — moveu 15vw pra direita */
-    width: clamp(700px, 65vw, 1012px); /* era 920px — 10% maior */
+    position: relative;
+    top: auto;
+    right: auto;
+    width: clamp(440px, 42vw, 600px);
+    aspect-ratio: 1800 / 1329;  /* proporção original, sem distorção */
     height: auto;
     max-width: none;
     margin: 0;
-    z-index: 2;
+    border-radius: 24px;       /* design moderno (Apple/Stripe style) */
     overflow: hidden;
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.04); /* hairline sutil */
+    z-index: 2;
   }
+  /* object-fit: cover preenche o container sem distorção.
+     object-position: 75% center foca no lado DIREITO da imagem
+     (onde estão os 4 homens — conteúdo útil de x=184 a x=1606 da PNG).
+     Com container de 440-600px e aspect-ratio fixo, nada vaza,
+     nada corta, nada distorce. */
   .hero-photo img {
     display: block;
     width: 100%;
-    height: auto; /* preserva 1.354:1 original — sem distorção */
+    height: 100%;
+    object-fit: cover;
+    object-position: 75% center;
   }
-  /* Glow radial removido — ele vazava pelas bordas anti-aliased da foto
-     e criava um contorno laranja nos homens. O glow ambiente agora vem
-     do .hero-glow-1 do hero, que aparece por trás das áreas transparentes. */
+  /* Glow radial removido — desnecessário agora com border-radius */
   .hero-photo::before { content: none; }
-  /* No desktop o fade é mais alto (45%) — cobre a base maior da foto */
+  /* Fade inferior: clipado pelo border-radius do pai (overflow: hidden
+     no .hero-photo). 45% no desktop pra cobrir a base do container. */
   .hero-photo::after {
     height: 45%;
   }
