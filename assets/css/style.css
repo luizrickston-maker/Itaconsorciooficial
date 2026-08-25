@@ -640,7 +640,11 @@ h1 em .wi, h2 em .wi {
   .hero-photo {
     position: absolute;
     top: 20px;
-    right: 3vw; /* foto grande, levemente vazada pra fora (não corta) */
+    /* Limite exato: -(largura_renderizada × 0.108).
+       A PNG tem 10.8% de transparência à direita (194px de 1800px).
+       Em qualquer viewport, a borda direita da foto encosta no
+       viewport exatamente onde termina o conteúdo útil — nunca corta. */
+    right: calc(clamp(700px, 65vw, 1012px) * -0.108);
     width: clamp(700px, 65vw, 1012px); /* 10% maior */
     height: auto;
     max-width: none;
