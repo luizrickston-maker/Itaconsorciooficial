@@ -1548,8 +1548,10 @@ h1 em .wi, h2 em .wi {
 
 /* Em telas menores a tipografia respira sem competir com o badge acima */
 @media (max-width: 768px) {
-  .about-us { padding: 72px 0 64px; }
-  .about-us p { font-size: 1rem; line-height: 1.72; }
+  /* No mobile, a descrição "Quem somos" já fica DENTRO do hero,
+     entre a foto e o badge (.hero-team-note). Esconder a seção
+     dedicada pra não duplicar o conteúdo. */
+  .about-us { display: none; }
 }
 
 @media (max-width: 560px) {
